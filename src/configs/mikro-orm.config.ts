@@ -1,13 +1,14 @@
 import { MikroOrmModuleOptions } from '@mikro-orm/nestjs';
 import { PostgreSqlDriver } from '@mikro-orm/postgresql';
+import { SeedManager } from '@mikro-orm/seeder';
 import type { ConfigService } from '@nestjs/config';
 
 export function mikroOrmConfigFactory(
   configService: ConfigService,
 ): MikroOrmModuleOptions {
   return {
-    entities: ['dist/entities/*.entity.js'],
-    entitiesTs: ['src/entities/*.entity.ts'],
+    extensions: [SeedManager],
+    entitiesTs: ['src/entities/index.ts'],
     driver: PostgreSqlDriver,
     dbName: configService.getOrThrow<string>('DB_NAME'),
     user: configService.getOrThrow<string>('DB_USER'),
